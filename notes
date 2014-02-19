@@ -1,0 +1,24 @@
+questions:
+
+Does b^d chain need to know b^{d+1} blockheaders?
+
+
+If a reorg on b^d makes b^{d+1} invalid then we can to a first order guarantee
+proper ordering of events.
+
+
+* Mining
+
+Always done with a full suite of blocks from from b^0 to b^d
+
+"Boxed" difficulties: if PoW is valid for a given chain difficulty it must be
+the best known block.
+
+Enforce alternating pattern so that 51% attack resources *can't* be brought to
+bear on an isolated part of the chain. Issue: How much worse are consensus
+requirements? Orphan rate will go up a bit due to boxed difficulties. Or maybe
+not an issue?
+
+
+Note how all transactions are now two phase commits: mark coins as spent
+followed by create new outputs.

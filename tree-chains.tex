@@ -1,0 +1,90 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{graphics}
+\usepackage{url}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{arrows,positioning}
+\begin{document}
+\title{Tree Chains}
+\author{Peter Todd}
+\date{FIXME}
+\maketitle
+
+\section{Introduction}
+
+Linear blockchains offer a "one-sized-fits-all" solution to the
+proof-of-publication problem. While this
+offers maximum first-order security, the inherently poor $O(n^2)$ scalability
+undermines the security of this simple design with second-order effects like
+centralization.
+
+
+\section{Refining proof-of-publication with TXO set commitments}
+
+Let $B=(b_0,\dots,b_n)$ be a linear\footnote{Linear in the sense that $b_i$
+follows $b_{i-1}$v; what form the cryptographic hash commitments take is
+irrelevant.} set of blockheaders following Satoshi/Bitcoin proof-of-work
+rules.\cite{bitcoin-paper} Each block contains a set of transactions
+$T=(t_0,\dots,t_m)$. Each transaction in that set causes zero or more prior
+transaction outputs to be marked as spent and creates zero or more new
+transaction outputs.\footnote{A zero input, $>0$ output transaction can be used
+to reward miners with new coins.} Each block \emph{commits} to the state of the
+entire TXO set, that is all transaction outputs that have ever been created,
+using an insertion-ordered sparse merkle
+tree\cite{revocation-transparency-sparse-merkle-tree} or merkle mountain range.
+A valid block may never commit to a TXO set that would cause a previously spent
+transaction to be marked unspent.
+
+When a transaction $t$ is published in a block $b_i$ we can say that the
+blockchain acts as a \emph{witness} to the fact that the transaction was
+published. The security of that witness is measured in expected work done:
+
+\begin{equation}
+    \omega(t) = \sum_{j=i}^n \operatorname{Work}(b_j)
+\end{equation}
+
+Assuming we do in fact have a jam-free publication mechanism\footnote{The
+reader would do well to dwell on the "turtles all the way down" nature of the
+fact that our proof-of-publication mechanism relies on a proof-of-publication
+mechanism: a hopefully jam-free network.} for the block headers themselves
+these headers are proof of the minimum amount of work required by an attacker
+to rewrite history double-spend the transaction.
+
+We will call $\omega(t)$ the measurement of the \emph{first-order} double-spend
+security; implicit in that measurement is the assumption that all prior blocks
+were valid. We would also like to know if the transaction output(s) the
+transaction spent were themselves valid and unspent. For a given transaction
+output $x$ created in block $b_i$ the blocks following $b_i$ act as a witness
+to the fact that for output $x$ 
+
+
+FIXME: so introduce first-order and second-order security here; we'll use the
+concepts later when doing the cross-chain stuff.
+
+
+\section{Proof-of-publication and merge-mining}
+
+\begin{figure}
+    \centering
+    \include{figures/three-merge-mined-chains}
+    \caption{Three merge mined chains}
+    \label{fig:three-merge-mined-chains}
+\end{figure}
+
+Figure \ref{fig:three-merge-mined-chains} shows master blockchain $A$, and
+two merge-mined blockchains $B$ and $C$. With regard to scalability the system as a whole may 
+
+
+\cite{disentangling-crypto-coin-mining}
+
+
+\section{The security/scalability tradeoff}
+
+
+
+
+\bibliographystyle{plain}
+\bibliography{tree-chains}
+
+\end{document}
