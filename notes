@@ -22,3 +22,8 @@ not an issue?
 
 Note how all transactions are now two phase commits: mark coins as spent
 followed by create new outputs.
+
+preface with jason cronk's talk on legality and mining
+
+make sure to get andrew miller's ideas on formalizing what kind of proof we get
+out of all this
